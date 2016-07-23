@@ -2,7 +2,7 @@ CC=g++
 OBJS=main.o game.o graphics.o input.o shader.o
 EXE=game
 FLAGS=-Wall
-LIBS=-lSDL2
+LIBS=-lSDL2 -lGL
 
 $(EXE): $(OBJS)
 	$(CC) -o $(EXE) $(OBJS) $(FLAGS) $(LIBS)
