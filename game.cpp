@@ -14,7 +14,7 @@ Game::Game() {
 
     // Initialize SDL subsystems
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        fprintf(stderr, "SDL_Init failed :%s\n", SDL_GetError());
+        fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
     } else {
         gameLoop();
     }

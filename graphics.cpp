@@ -16,7 +16,7 @@ Graphics::Graphics() {
                               640, 480,
                               SDL_WINDOW_OPENGL);
     if (!window) {
-        fprintf(stderr, "SDL_CreateWindow failed %s\n", SDL_GetError());
+        fprintf(stderr, "SDL_CreateWindow failed: %s\n", SDL_GetError());
     }
 
     // Draw the window's icon
@@ -65,7 +65,7 @@ Graphics::Graphics() {
     // Create an OpenGL context
     glcontext = SDL_GL_CreateContext(window);
     if (!glcontext) {
-        fprintf(stderr, "SDL_GL_CreateContext failed %s\n", SDL_GetError());
+        fprintf(stderr, "SDL_GL_CreateContext failed: %s\n", SDL_GetError());
     }
 
     // TODO: The rest of the OpenGL stuff
