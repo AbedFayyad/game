@@ -1,9 +1,10 @@
 #ifndef globals_hpp
 #define globals_hpp
 
+template <typename T>
 struct Point {
-    unsigned int x;
-    unsigned int y;
+    T x;
+    T y;
 };
 
 #endif
