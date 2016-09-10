@@ -1,5 +1,7 @@
 #include "input.hpp"
 
+#include <SDL2/SDL.h>
+
 void Input::beginNewFrame() {
     pressedKeys.clear();
     releasedKeys.clear();
