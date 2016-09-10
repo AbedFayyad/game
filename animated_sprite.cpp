@@ -6,7 +6,6 @@
 
 #include <SDL2/SDL.h>
 #include <string>
-#include <utility>
 #include <vector>
 
 AnimatedSprite::AnimatedSprite() {}

@@ -8,7 +8,6 @@
 #include <SDL2/SDL.h>
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
 
 class AnimatedSprite : public Sprite {
