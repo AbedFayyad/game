@@ -5,7 +5,7 @@
 #include <string>
 
 Graphics::Graphics() {
-    SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(1280, 720, 0, &window, &renderer);
     SDL_SetWindowTitle(window, "prototype");
 }
 

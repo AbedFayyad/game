@@ -25,7 +25,7 @@ Sprite::~Sprite() {
 void Sprite::update() {}
 
 void Sprite::draw(Graphics &graphics, int x, int y) {
-    SDL_Rect destinationRect = {x, y, sourceRect.w * 16, sourceRect.h * 16};
+    SDL_Rect destinationRect = {x, y, sourceRect.w * 32, sourceRect.h * 32};
 
     graphics.draw(spriteSheet, &sourceRect, &destinationRect);
 }
