@@ -29,24 +29,36 @@ void AnimatedSprite::update(unsigned int elapsedTime) {
 }
 
 void AnimatedSprite::advanceFrame() {
-    if (currentFrame == currentAnimation.size() - 1) currentFrame = 0;
-    else currentFrame++;
+    if (currentFrame == currentAnimation.size() - 1) {
+        currentFrame = 0;
+        
+        animationIsRunning = false;
+    } else {
+        currentFrame++;
+    }
 
     sourceRect.x = currentAnimation.at(currentFrame).x * sourceRect.w;
     sourceRect.y = currentAnimation.at(currentFrame).y * sourceRect.h;
 }
 
 void AnimatedSprite::addAnimation(std::string name,
-        std::vector<Point> frames) {
+        std::vector<Point<unsigned int> > frames) {
     animations[name] = frames;
 }
 
 void AnimatedSprite::runAnimation(std::string name) {
-    animationIsRunning = true;
-    currentAnimation = animations[name];
-    currentFrame = 0;
+    if (!animationIsRunning) {
+        animationIsRunning = true;
+        currentAnimation = animations[name];
+        currentFrame = 0;
+    }
 }
 
 void AnimatedSprite::stopAnimation() {
     animationIsRunning = false;
+
+    // TODO Fix frame reset
+    currentFrame = 0;
+    sourceRect.x = currentAnimation.at(currentFrame).x * sourceRect.w;
+    sourceRect.y = currentAnimation.at(currentFrame).y * sourceRect.h;
 }

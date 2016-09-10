@@ -3,7 +3,7 @@
 
 #include "graphics.hpp"
 #include "input.hpp"
-#include "animated_sprite.hpp"
+#include "player.hpp"
 
 class Game {
 public:
@@ -19,7 +19,8 @@ private:
 
     Graphics graphics;
     Input input;
-    AnimatedSprite sprite;
+
+    Player player;
 };
 
 #endif
