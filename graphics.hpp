@@ -4,18 +4,17 @@
 #include <SDL2/SDL.h>
 #include <map>
 #include <string>
-#include <utility>
 
 class Graphics {
 public:
     Graphics();
     ~Graphics();
 
-    // Load an image into memory
-    SDL_Texture *loadImage(const std::string &path);
+    // Return the current rendering context
+    SDL_Renderer *getRenderer() const;
 
-    // Unload an image from memory
-    void unloadImage(const std::string &path);
+    // Load an image into memory
+    SDL_Surface *loadImage(const std::string &path);
 
     // Draw a texture to the screen
     void draw(SDL_Texture *texture, SDL_Rect *src, SDL_Rect *dest);
@@ -30,8 +29,7 @@ private:
     SDL_Window *window;
     SDL_Renderer *renderer;
 
-    std::map<std::string, SDL_Surface *> surfaces;
-    std::map<std::string, std::pair<SDL_Surface *, unsigned int> > textures;
+    std::map<std::string, SDL_Surface *> spriteSheets;
 };
 
 #endif
