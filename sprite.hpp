@@ -14,7 +14,7 @@ public:
 
     void update();
     void draw(int x, int y);
-private:
+protected:
     Graphics *graphics;
 
     SDL_Rect sourceRect;
