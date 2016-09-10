@@ -9,7 +9,7 @@
 Player::Player() {}
 
 Player::Player(Graphics &graphics, Point<float> position)
-    : sprite(AnimatedSprite(graphics, "img.png",
+    : sprite(AnimatedSprite(graphics, "content/sprites/img.png",
                 (SDL_Rect) {0, 0, 16, 16}, 160))
     , position(position) {
     std::vector<Point<unsigned int> > frames;
