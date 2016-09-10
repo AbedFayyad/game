@@ -2,7 +2,7 @@
 
 #include "graphics.hpp"
 #include "input.hpp"
-#include "sprite.hpp"
+#include "animated_sprite.hpp"
 
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -10,18 +10,22 @@
 
 namespace {
     const unsigned int FPS = 60;
-    const unsigned int MAX_FRAME_TIME = 6 * 1000 / FPS;
+    const unsigned int MS_PER_S = 1000;
+    const unsigned int MAX_FRAME_TIME = MS_PER_S / FPS; 
 }
 
-Game::Game() : sprite(Sprite(graphics, "img.png", (SDL_Rect) {0, 0, 16, 16})) {}
+Game::Game() : sprite(AnimatedSprite(graphics, "img.png",
+            (SDL_Rect) {0, 48, 16, 16}, 160)) {}
 
 Game::~Game() {}
 
 void Game::run() {
+    unsigned int lastUpdateTime, currentTime, elapsedTime;
+
     bool shouldQuit = false;
     SDL_Event event;
 
-    unsigned int lastUpdateTime = SDL_GetTicks();
+    lastUpdateTime = SDL_GetTicks();
 
     while (!shouldQuit) {
 
@@ -46,22 +50,26 @@ void Game::run() {
         // Exit if requested
         if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) shouldQuit = true;
 
-        // Cap frame time to the MAX_FRAME_TIME if necessary
-        unsigned int elapsedTime = SDL_GetTicks() - lastUpdateTime;
+        currentTime = SDL_GetTicks();
+        elapsedTime = currentTime - lastUpdateTime;
+        lastUpdateTime = currentTime;
 
-        // Perform updates
+        // Perform updates; cap frame time to the MAX_FRAME_TIME if necessary
         update(std::min(elapsedTime, MAX_FRAME_TIME));
 
         // Perform drawing
         draw();
-        graphics.clear();
-
-        sprite.draw(0, 0);
-
-        graphics.flip();
     }
 }
 
-void Game::update(unsigned int elapsedTime) {}
+void Game::update(unsigned int elapsedTime) {
+    sprite.update(elapsedTime);
+}
 
-void Game::draw() {}
+void Game::draw() {
+    graphics.clear();
+
+    sprite.draw(100, 100);
+
+    graphics.flip();
+}
