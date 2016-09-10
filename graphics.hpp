@@ -10,11 +10,11 @@ public:
     Graphics();
     ~Graphics();
 
-    // Return the current rendering context
-    SDL_Renderer *getRenderer() const;
+    // Create a texture from the given image
+    SDL_Texture *createTexture(const std::string &path);
 
-    // Load an image into memory
-    SDL_Surface *loadImage(const std::string &path);
+    // Delete a texture when it is no longer needed
+    void deleteTexture(const std::string &path);
 
     // Draw a texture to the screen
     void draw(SDL_Texture *texture, SDL_Rect *src, SDL_Rect *dest);
@@ -29,7 +29,12 @@ private:
     SDL_Window *window;
     SDL_Renderer *renderer;
 
-    std::map<std::string, SDL_Surface *> spriteSheets;
+    // TODO Consider removing surfaces immediately after texture is created
+    // Map to keep track of surfaces
+    std::map<std::string, SDL_Surface *> surfaces;
+
+    // Map to keep track of textures and number of remaining users
+    std::map<std::string, std::pair<SDL_Texture *, unsigned int> > textures;
 };
 
 #endif

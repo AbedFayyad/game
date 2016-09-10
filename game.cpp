@@ -56,7 +56,7 @@ void Game::run() {
         draw();
         graphics.clear();
 
-        sprite.draw(graphics, 0, 0);
+        sprite.draw(0, 0);
 
         graphics.flip();
     }

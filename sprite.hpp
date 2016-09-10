@@ -13,10 +13,13 @@ public:
     ~Sprite();
 
     void update();
-    void draw(Graphics &graphics, int x, int y);
+    void draw(int x, int y);
 private:
+    Graphics *graphics;
+
     SDL_Rect sourceRect;
     SDL_Texture *spriteSheet;
+    std::string spriteSheetPath;
 };
 
 #endif

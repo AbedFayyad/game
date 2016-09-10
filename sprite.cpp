@@ -4,28 +4,24 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <string>
 
 Sprite::Sprite() {}
 
 Sprite::Sprite(Graphics &graphics, const std::string path, SDL_Rect sourceRect)
-    : sourceRect(sourceRect) {
-    spriteSheet = SDL_CreateTextureFromSurface(graphics.getRenderer(),
-            graphics.loadImage(path));
-
-    if (!spriteSheet) {
-        std::cerr << "SDL_CreateTextureFromSurface failed: " << SDL_GetError()
-            << std::endl;
-    }
-}
+    : graphics(&graphics)
+    , sourceRect(sourceRect)
+    , spriteSheet(graphics.createTexture(path))
+    , spriteSheetPath(path) {}
 
 Sprite::~Sprite() {
-    SDL_DestroyTexture(spriteSheet);
+    graphics->deleteTexture(spriteSheetPath);
 }
 
 void Sprite::update() {}
 
-void Sprite::draw(Graphics &graphics, int x, int y) {
+void Sprite::draw(int x, int y) {
     SDL_Rect destinationRect = {x, y, sourceRect.w * 32, sourceRect.h * 32};
 
-    graphics.draw(spriteSheet, &sourceRect, &destinationRect);
+    graphics->draw(spriteSheet, &sourceRect, &destinationRect);
 }
