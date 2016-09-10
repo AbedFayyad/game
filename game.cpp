@@ -1,45 +1,34 @@
 #include "game.hpp"
 
-#include <SDL2/SDL.h>
 #include "graphics.hpp"
 #include "input.hpp"
+#include "sprite.hpp"
+
+#include <SDL2/SDL.h>
+#include <iostream>
+#include <string>
 
 namespace {
-    const int FPS = 60;
-    const int MS_PER_S = 1000;
-    const int MAX_FRAME_TIME = MS_PER_S / FPS;
+    const unsigned int FPS = 60;
+    const unsigned int MAX_FRAME_TIME = 6 * 1000 / FPS;
 }
 
-Game::Game() {
+Game::Game() : sprite(Sprite(graphics, "img.png", (SDL_Rect) {0, 0, 16, 16})) {}
 
-    // Initialize SDL subsystems
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
-    } else {
-        gameLoop();
-    }
-}
+Game::~Game() {}
 
-Game::~Game() {
-
-    // Clean up all initialized SDL subsystems
-    SDL_Quit();
-}
-
-void Game::gameLoop() {
-    Graphics graphics;
-    Input input;
-
+void Game::run() {
     bool shouldQuit = false;
     SDL_Event event;
 
-    int lastUpdateTime = SDL_GetTicks();
-    int currentTime, elapsedTime;
+    unsigned int lastUpdateTime = SDL_GetTicks();
 
-    // Each iteration of this loop is a single frame
     while (!shouldQuit) {
+
+        // Inform Input object of new frame
         input.beginNewFrame();
 
+        // Handle events
         if (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_KEYDOWN:
@@ -54,14 +43,25 @@ void Game::gameLoop() {
             }
         }
 
-        // Handle keystrokes
+        // Exit if requested
         if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) shouldQuit = true;
-        else if (input.isKeyHeld(SDL_SCANCODE_LEFT)) NULL; // Move left
-        else if (input.isKeyHeld(SDL_SCANCODE_LEFT)) NULL; // Move right
 
-        // Simulate physics
+        // Cap frame time to the MAX_FRAME_TIME if necessary
+        unsigned int elapsedTime = SDL_GetTicks() - lastUpdateTime;
 
-        // Redraw graphics
-        graphics.draw();
+        // Perform updates
+        update(std::min(elapsedTime, MAX_FRAME_TIME));
+
+        // Perform drawing
+        draw();
+        graphics.clear();
+
+        sprite.draw(graphics, 0, 0);
+
+        graphics.flip();
     }
 }
+
+void Game::update(unsigned int elapsedTime) {}
+
+void Game::draw() {}
