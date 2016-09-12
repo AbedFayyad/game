@@ -2,7 +2,6 @@
 #define player_hpp
 
 #include "animated_sprite.hpp"
-#include "globals.hpp"
 #include "graphics.hpp"
 
 class Player {
