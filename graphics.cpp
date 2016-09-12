@@ -8,6 +8,7 @@
 Graphics::Graphics() {
     SDL_CreateWindowAndRenderer(1280, 720, 0, &window, &renderer);
     SDL_SetWindowTitle(window, "prototype");
+    SDL_SetRenderDrawColor(renderer, 0x41, 0x65, 0x3c, SDL_ALPHA_OPAQUE);
 }
 
 Graphics::~Graphics() {
