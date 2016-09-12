@@ -8,6 +8,7 @@
 
 Player::Player() {}
 
+/*
 Player::Player(Graphics &graphics, Point<float> position)
     : sprite(AnimatedSprite(graphics, "content/sprites/img.png",
                 (SDL_Rect) {0, 0, 16, 16}, 160))
@@ -21,6 +22,7 @@ Player::Player(Graphics &graphics, Point<float> position)
     frames.push_back((Point<unsigned int>) {5, 0});
     sprite.addAnimation("run", frames);
 }
+*/
 
 Player::~Player() {}
 

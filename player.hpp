@@ -3,11 +3,12 @@
 
 #include "animated_sprite.hpp"
 #include "graphics.hpp"
+#include "vector.hpp"
 
 class Player {
 public:
     Player();
-    Player(Graphics &graphics, Point<float> position);
+//    Player(Graphics &graphics, Vector2<float> position);
     ~Player();
 
     void update(unsigned int elapsedTime);
@@ -21,7 +22,7 @@ public:
     void stopMoving();
 private:
     AnimatedSprite sprite;
-    Point<float> position;
+    Vector2<float> position;
 };
 
 #endif
