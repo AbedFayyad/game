@@ -1,8 +1,8 @@
 #include "animated_sprite.hpp"
 
-#include "globals.hpp"
 #include "graphics.hpp"
 #include "sprite.hpp"
+#include "vector.hpp"
 
 #include <SDL2/SDL.h>
 #include <string>
@@ -42,7 +42,7 @@ void AnimatedSprite::advanceFrame() {
 }
 
 void AnimatedSprite::addAnimation(std::string name,
-        std::vector<Point<unsigned int> > frames) {
+        std::vector<Vector2<unsigned int> > frames) {
     animations[name] = frames;
 }
 

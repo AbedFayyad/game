@@ -19,8 +19,6 @@ private:
 
     Graphics graphics;
     Input input;
-
-    Player player;
 };
 
 #endif

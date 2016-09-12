@@ -1,9 +1,9 @@
 #ifndef animated_sprite_hpp
 #define animated_sprite_hpp
 
-#include "globals.hpp"
 #include "graphics.hpp"
 #include "sprite.hpp"
+#include "vector.hpp"
 
 #include <SDL2/SDL.h>
 #include <map>
@@ -18,7 +18,7 @@ public:
 
     // Add an animation by specifying a name and frame coordinates
     void addAnimation(std::string name,
-            std::vector<Point<unsigned int> > frames);
+            std::vector<Vector2<unsigned int> > frames);
 
     // Run an animation by name
     void runAnimation(std::string name);
@@ -37,13 +37,13 @@ private:
     unsigned int timeSinceLastFrame;
 
     // The currently running animation
-    std::vector<Point<unsigned int> > currentAnimation;
+    std::vector<Vector2<unsigned int> > currentAnimation;
 
     // Index of the current frame in the current animation
     unsigned int currentFrame;
 
     // A map of animation names and their frames
-    std::map<std::string, std::vector<Point<unsigned int> > > animations;
+    std::map<std::string, std::vector<Vector2<unsigned int> > > animations;
 
     // Whether or not an animation is being played
     bool animationIsRunning;
