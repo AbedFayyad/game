@@ -6,7 +6,7 @@
 int main(int argc, char *argv[]) {
 
     // Set up SDL flags
-    Uint32 flags = SDL_INIT_VIDEO;
+    Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER;
 
     // Initialize SDL subsystems and start game if successful
     if (!SDL_Init(flags)) {

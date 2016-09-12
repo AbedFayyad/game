@@ -7,6 +7,10 @@
 class Input {
 public:
 
+    Input();
+
+    void printInfo();
+
     // Called at the begnning of each frame to reset pressed and released keys
     void beginNewFrame();
 
@@ -28,6 +32,7 @@ public:
     bool isKeyHeld(SDL_Scancode key);
 
 private:
+    SDL_GameController *controller;
 
     // Maps to keep track of the current frame's relevant keystrokes
     std::map<SDL_Scancode, bool> heldKeys;
