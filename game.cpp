@@ -14,41 +14,22 @@ namespace {
     const unsigned int MAX_FRAME_TIME = MS_PER_S / FPS; 
 }
 
-Game::Game() {}
-
-Game::~Game() {}
-
 void Game::run() {
-    unsigned int lastUpdateTime, currentTime, elapsedTime;
-
     bool shouldQuit = false;
-    SDL_Event event;
 
-    lastUpdateTime = SDL_GetTicks();
+    unsigned int currentTime, elapsedTime;
+    unsigned int lastUpdateTime = SDL_GetTicks();
 
     while (!shouldQuit) {
 
-        // Inform Input object of new frame
-        input.beginNewFrame();
+        // Handle input events
+        input.handleEvents();
 
-        // Handle events
-        if (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_KEYDOWN:
-                    if (!event.key.repeat) input.keyDownEvent(event);
-                    break;
-                case SDL_KEYUP:
-                    input.keyUpEvent(event);
-                    break;
-                case SDL_QUIT:
-                    shouldQuit = true;
-                    break;
-            }
-        }
-
-        // Exit if requested
+        // Check if user requested to exit
         if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) shouldQuit = true;
+        if (input.userRequestedShutdown) shouldQuit = true;
 
+        // Calculate time since last update
         currentTime = SDL_GetTicks();
         elapsedTime = currentTime - lastUpdateTime;
         lastUpdateTime = currentTime;

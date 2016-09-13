@@ -3,28 +3,29 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Input::Input() {
-    int numJoysticks = SDL_NumJoysticks();
-    std::cout << "Input: Detected " << numJoysticks << " joystick"
-        << (numJoysticks == 1 ? "." : "s.") << std::endl;
+Input::Input() : userRequestedShutdown(false) {}
 
-    for (int i = 0; i < numJoysticks; ++ i) {
-        if (SDL_IsGameController(i)) {
-            controller = SDL_GameControllerOpen(i);
+void Input::handleEvents() {
+    resetEvents();
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+        case SDL_QUIT:
+            userRequestedShutdown = true;
+            break;
+        case SDL_KEYDOWN:
+            if (!event.key.repeat) keyDownEvent(event);
+            break;
+        case SDL_KEYUP:
+            keyUpEvent(event);
             break;
         }
     }
 }
 
-void Input::printInfo() {
-    if (!controller) return;
-
-    std::cout << "Input: Left trigger's value is "
-        << SDL_GameControllerGetAxis(controller,
-                SDL_CONTROLLER_AXIS_TRIGGERLEFT) << std::endl;
-}
-
-void Input::beginNewFrame() {
+void Input::resetEvents() {
     pressedKeys.clear();
     releasedKeys.clear();
 }

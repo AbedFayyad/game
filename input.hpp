@@ -6,21 +6,11 @@
 
 class Input {
 public:
-
     Input();
 
-    void printInfo();
+    bool userRequestedShutdown;
 
-    // Called at the begnning of each frame to reset pressed and released keys
-    void beginNewFrame();
-
-
-    // Called when a key is pressed
-    void keyDownEvent(const SDL_Event &event);
-
-    // Called when a key is released
-    void keyUpEvent(const SDL_Event &event);
-
+    void handleEvents();
 
     // Check if a key was pressed during the current frame
     bool wasKeyPressed(SDL_Scancode key);
@@ -32,12 +22,13 @@ public:
     bool isKeyHeld(SDL_Scancode key);
 
 private:
-    SDL_GameController *controller;
-
-    // Maps to keep track of the current frame's relevant keystrokes
     std::map<SDL_Scancode, bool> heldKeys;
     std::map<SDL_Scancode, bool> pressedKeys;
     std::map<SDL_Scancode, bool> releasedKeys;
+
+    void resetEvents();
+    void keyDownEvent(const SDL_Event &event);
+    void keyUpEvent(const SDL_Event &event);
 };
 
 #endif
