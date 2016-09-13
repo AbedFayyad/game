@@ -14,7 +14,7 @@ public:
     SDL_Texture *createTexture(const std::string &path);
 
     // Delete a texture when it is no longer needed
-    void deleteTexture(const std::string &path);
+    void freeTexture(const std::string &path);
 
     // Draw a texture to the screen
     void draw(SDL_Texture *texture, SDL_Rect *src, SDL_Rect *dest);

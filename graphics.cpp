@@ -42,9 +42,9 @@ SDL_Texture *Graphics::createTexture(const std::string &path) {
     return textures[path].first;
 }
 
-void Graphics::deleteTexture(const std::string &path) {
+void Graphics::freeTexture(const std::string &path) {
     if (textures.count(path) == 0) {
-        std::cerr << "deleteTexture failed: Invalid texture" << std::endl;
+        std::cerr << "freeTexture failed: Invalid texture" << std::endl;
     } else {
         SDL_Texture *texture = textures[path].first;
         unsigned int count = textures[path].second;

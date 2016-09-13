@@ -15,13 +15,13 @@ Sprite::Sprite(Graphics &graphics, const std::string path, SDL_Rect sourceRect)
     , spriteSheetPath(path) {}
 
 Sprite::~Sprite() {
-    graphics->deleteTexture(spriteSheetPath);
+    graphics->freeTexture(spriteSheetPath);
 }
 
 void Sprite::update() {}
 
 void Sprite::draw(int x, int y) {
-    SDL_Rect destinationRect = {x, y, sourceRect.w * 16, sourceRect.h * 16};
+    SDL_Rect destinationRect = {x, y, sourceRect.w * 8, sourceRect.h * 8};
 
     graphics->draw(spriteSheet, &sourceRect, &destinationRect);
 }
