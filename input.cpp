@@ -21,6 +21,11 @@ void Input::handleEvents() {
         case SDL_KEYUP:
             keyUpEvent(event);
             break;
+        case SDL_CONTROLLERDEVICEADDED:
+        case SDL_CONTROLLERDEVICEREMOVED:
+        case SDL_CONTROLLERBUTTONDOWN:
+        case SDL_CONTROLLERBUTTONUP:
+            break;
         }
     }
 }
