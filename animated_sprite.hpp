@@ -15,6 +15,7 @@ public:
     AnimatedSprite();
     AnimatedSprite(Graphics &graphics, const std::string path,
             SDL_Rect sourceRect, unsigned int frameTime);
+    ~AnimatedSprite();
 
     // Add an animation by specifying a name and frame coordinates
     void addAnimation(std::string name,

@@ -5,18 +5,26 @@
 #include "vector.hpp"
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <string>
 #include <vector>
 
-AnimatedSprite::AnimatedSprite() {}
+AnimatedSprite::AnimatedSprite() {
+    std::clog << "AnimatedSprite instance successfully initialized\n";
+}
 
 AnimatedSprite::AnimatedSprite(Graphics &graphics, const std::string path,
         SDL_Rect sourceRect, unsigned int frameTime)
     : Sprite(graphics, path, sourceRect)
     , frameTime(frameTime)
     , timeSinceLastFrame(0)
-    , animationIsRunning(false)
-{}
+    , animationIsRunning(false) {
+    std::clog << "AnimatedSprite instance successfully initialized\n";
+}
+
+AnimatedSprite::~AnimatedSprite() {
+    std::clog << "AnimatedSprite instance destroyed\n";
+}
 
 void AnimatedSprite::update(unsigned int elapsedTime) {
     timeSinceLastFrame += elapsedTime;
@@ -44,6 +52,8 @@ void AnimatedSprite::advanceFrame() {
 void AnimatedSprite::addAnimation(std::string name,
         std::vector<Vector2<unsigned int> > frames) {
     animations[name] = frames;
+
+    std::clog << "AnimatedSprite: Sprite animation added\n";
 }
 
 void AnimatedSprite::runAnimation(std::string name) {
@@ -52,6 +62,8 @@ void AnimatedSprite::runAnimation(std::string name) {
         currentAnimation = animations[name];
         currentFrame = 0;
     }
+
+    std::clog << "AnimatedSprite: Began running animation " << name << '\n';
 }
 
 void AnimatedSprite::stopAnimation() {
@@ -61,4 +73,6 @@ void AnimatedSprite::stopAnimation() {
     currentFrame = 0;
     sourceRect.x = currentAnimation.at(currentFrame).x * sourceRect.w;
     sourceRect.y = currentAnimation.at(currentFrame).y * sourceRect.h;
+
+    std::clog << "AnimatedSprite: Stopped running current animation\n";
 }

@@ -9,6 +9,7 @@
 class Input {
 public:
     Input();
+    ~Input();
 
     bool userRequestedShutdown;
 

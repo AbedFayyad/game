@@ -7,6 +7,8 @@
 
 class Game {
 public:
+    Game();
+    ~Game();
 
     // Begins the game loop (begin accepting input and drawing to the window)
     void run();

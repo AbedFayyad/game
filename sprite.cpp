@@ -6,16 +6,22 @@
 #include <iostream>
 #include <string>
 
-Sprite::Sprite() {}
+Sprite::Sprite() {
+    std::clog << "Sprite instance successfully initialized\n";
+}
 
 Sprite::Sprite(Graphics &graphics, const std::string path, SDL_Rect sourceRect)
     : graphics(&graphics)
     , sourceRect(sourceRect)
     , spriteSheet(graphics.createTexture(path))
-    , spriteSheetPath(path) {}
+    , spriteSheetPath(path) {
+    std::clog << "Sprite instance successfully initialized\n";
+}
 
 Sprite::~Sprite() {
     graphics->freeTexture(spriteSheetPath);
+
+    std::clog << "Sprite instance destroyed\n";
 }
 
 void Sprite::update() {}

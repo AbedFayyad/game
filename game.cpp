@@ -14,7 +14,17 @@ namespace {
     const unsigned int MAX_FRAME_TIME = MS_PER_S / FPS; 
 }
 
+Game::Game() {
+    std::clog << "Game instance successfully initialized\n";
+}
+
+Game::~Game() {
+    std::clog << "Game instance destroyed\n";
+}
+
 void Game::run() {
+    std::clog << "Game: Game loop began\n";
+
     bool shouldQuit = false;
 
     unsigned int currentTime, elapsedTime;
@@ -40,6 +50,8 @@ void Game::run() {
         // Perform drawing
         draw();
     }
+
+    std::clog << "Game: Game loop ended\n";
 }
 
 void Game::update(unsigned int elapsedTime) {}

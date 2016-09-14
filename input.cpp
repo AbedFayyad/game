@@ -3,7 +3,13 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-Input::Input() : userRequestedShutdown(false) {}
+Input::Input() : userRequestedShutdown(false) {
+    std::clog << "Input instance successfully initialized\n";
+}
+
+Input::~Input() {
+    std::clog << "Input instance destroyed\n";
+}
 
 void Input::handleEvents() {
     resetEvents();
@@ -12,19 +18,41 @@ void Input::handleEvents() {
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
-        case SDL_QUIT: userRequestedShutdown = true; break;
+        case SDL_QUIT:
+            std::clog << "Input: SDL_QUIT event\n";
+            userRequestedShutdown = true;
+            break;
 
-        case SDL_KEYDOWN: if (!event.key.repeat) keyDownEvent(event.key); break;
-        case SDL_KEYUP: keyUpEvent(event.key); break;
+        case SDL_KEYDOWN:
+            std::clog << "Input: SDL_KEYDOWN event\n";
+            if (!event.key.repeat) keyDownEvent(event.key);
+            break;
+        case SDL_KEYUP:
+            std::clog << "Input: SDL_KEYUP event\n";
+            keyUpEvent(event.key);
+            break;
 
         // TODO Handle unplugged/new controllers
-        case SDL_CONTROLLERDEVICEADDED: break;
-        case SDL_CONTROLLERDEVICEREMOVED: break;
+        case SDL_CONTROLLERDEVICEADDED:
+            std::clog << "Input: SDL_CONTROLLERDEVICEADDED event\n";
+            break;
+        case SDL_CONTROLLERDEVICEREMOVED:
+            std::clog << "Input: SDL_CONTROLLERDEVICEADDED event\n";
+            break;
 
-        case SDL_CONTROLLERBUTTONDOWN: buttonDownEvent(event.cbutton); break;
-        case SDL_CONTROLLERBUTTONUP: buttonUpEvent(event.cbutton); break;
+        case SDL_CONTROLLERBUTTONDOWN:
+            std::clog << "Input: SDL_CONTROLLERBUTTONDOWN event\n";
+            buttonDownEvent(event.cbutton);
+            break;
+        case SDL_CONTROLLERBUTTONUP:
+            std::clog << "Input: SDL_CONTROLLERBUTTONUP event\n";
+            buttonUpEvent(event.cbutton);
+            break;
 
-        case SDL_CONTROLLERAXISMOTION: axisMotionEvent(event.caxis); break;
+        case SDL_CONTROLLERAXISMOTION:
+            std::clog << "Input: SDL_CONTROLLERAXISMOTION event\n";
+            axisMotionEvent(event.caxis);
+            break;
         }
     }
 }

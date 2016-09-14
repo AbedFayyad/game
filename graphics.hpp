@@ -10,7 +10,7 @@ public:
     Graphics();
     ~Graphics();
 
-    // Create a texture from the given image
+    // Create a texture from the given image; return NULL on error
     SDL_Texture *createTexture(const std::string &path);
 
     // Delete a texture when it is no longer needed

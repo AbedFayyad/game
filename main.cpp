@@ -14,11 +14,13 @@ int main(int argc, char *argv[]) {
         // Must be kept in inner scope so destructor is called before SDL quits
         Game game;
         game.run();
-    } else std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
+    } else std::cerr << "SDL_Init failed: " << SDL_GetError();
 
 
     // Clean up SDL subsystems (regardless of initialization)
     SDL_Quit();
+
+    std::clog.flush();
 
     return 0;
 }
