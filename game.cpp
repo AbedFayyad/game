@@ -14,7 +14,7 @@ namespace {
     const unsigned int MAX_FRAME_TIME = MS_PER_S / FPS; 
 }
 
-Game::Game() {
+Game::Game() : activeScene(NULL) {
 
     // Set up SDL flags
     Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER;
@@ -67,10 +67,18 @@ void Game::gameLoop() {
     std::clog << "Game: Game loop ended\n";
 }
 
-void Game::update(unsigned int elapsedTime) {}
+void Game::addScene(const std::string name, Scene scene) {}
+
+void Game::setActiveScene(const std::string name) {}
+
+void Game::update(unsigned int elapsedTime) {
+    activeScene->update(elapsedTime);
+}
 
 void Game::draw(Graphics &graphics) {
     graphics.clear();
+
+    activeScene->draw(graphics);
 
     graphics.flip();
 }
