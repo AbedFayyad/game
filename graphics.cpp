@@ -7,11 +7,13 @@
 
 Graphics::Graphics() {
     if (SDL_CreateWindowAndRenderer(1280, 720, 0, &window, &renderer))
-        std::cerr << "SDL_CreateWindowAndRenderer failed: " << SDL_GetError();
+        std::cerr << "SDL_CreateWindowAndRenderer failed: "
+            << SDL_GetError() << '\n';
 
     SDL_SetWindowTitle(window, "prototype");
     if (SDL_SetRenderDrawColor(renderer, 0x41, 0x65, 0x3c, SDL_ALPHA_OPAQUE))
-        std::cerr << "SDL_SetRenderDrawColor failed: " << SDL_GetError();
+        std::cerr << "SDL_SetRenderDrawColor failed: "
+            << SDL_GetError() << '\n';
 
     std::clog << "Graphics instance successfully initialized\n";
 }
@@ -29,7 +31,7 @@ SDL_Texture *Graphics::createTexture(const std::string &path) {
     if (surfaces.count(path) == 0) {
         SDL_Surface *surface = IMG_Load(path.c_str());
         if (!surface) {
-            std::cerr << "IMG_Load failed to load " << path;
+            std::cerr << "IMG_Load failed to load " << path << '\n';
             return NULL;
         }
 
@@ -42,7 +44,7 @@ SDL_Texture *Graphics::createTexture(const std::string &path) {
                 surfaces[path]);
         if (!texture) {
             std::cerr << "SDL_CreateTextureFromSurface failed: "
-                << SDL_GetError();
+                << SDL_GetError() << '\n';
             return NULL;
         }
 
@@ -65,7 +67,7 @@ SDL_Texture *Graphics::createTexture(const std::string &path) {
 
 void Graphics::freeTexture(const std::string &path) {
     if (textures.count(path) == 0) {
-        std::cerr << "freeTexture failed: Invalid texture " << path;
+        std::cerr << "freeTexture failed: Invalid texture " << path << '\n';
     } else {
         SDL_Texture *texture = textures[path].first;
         unsigned int count = textures[path].second;
@@ -85,7 +87,7 @@ void Graphics::freeTexture(const std::string &path) {
 
 void Graphics::draw(SDL_Texture *texture, SDL_Rect *src, SDL_Rect *dest) {
     if (SDL_RenderCopy(renderer, texture, src, dest))
-        std::cerr << "SDL_RenderCopy failed: " << SDL_GetError();
+        std::cerr << "SDL_RenderCopy failed: " << SDL_GetError() << '\n';
 }
 
 void Graphics::flip() {
@@ -94,5 +96,5 @@ void Graphics::flip() {
 
 void Graphics::clear() {
     if (SDL_RenderClear(renderer))
-        std::cerr << "SDL_RenderClear failed: " << SDL_GetError();
+        std::cerr << "SDL_RenderClear failed: " << SDL_GetError() << '\n';
 }

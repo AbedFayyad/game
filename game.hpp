@@ -2,23 +2,17 @@
 #define game_hpp
 
 #include "graphics.hpp"
-#include "input.hpp"
-#include "player.hpp"
 
 class Game {
 public:
     Game();
     ~Game();
 
-    // Begins the game loop (begin accepting input and drawing to the window)
-    void run();
-
 private:
-    void update(unsigned int elapsedTime);
-    void draw();
+    void gameLoop();
 
-    Graphics graphics;
-    Input input;
+    void update(unsigned int elapsedTime);
+    void draw(Graphics &graphics);
 };
 
 #endif

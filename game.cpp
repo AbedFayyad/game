@@ -15,15 +15,28 @@ namespace {
 }
 
 Game::Game() {
-    std::clog << "Game instance successfully initialized\n";
+
+    // Set up SDL flags
+    Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER;
+
+    // Initialize SDL subsystems and start game if successful
+    if (!SDL_Init(flags)) {
+        std::clog << "Game instance successfully initialized\n";
+        gameLoop();
+    } else std::cerr << "SDL_Init failed: " << SDL_GetError() << '\n';
 }
 
 Game::~Game() {
+
+    // Clean up SDL subsystems (regardless of initialization)
     std::clog << "Game instance destroyed\n";
 }
 
-void Game::run() {
+void Game::gameLoop() {
     std::clog << "Game: Game loop began\n";
+
+    Graphics graphics;
+    Input input;
 
     bool shouldQuit = false;
 
@@ -48,7 +61,7 @@ void Game::run() {
         update(std::min(elapsedTime, MAX_FRAME_TIME));
 
         // Perform drawing
-        draw();
+        draw(graphics);
     }
 
     std::clog << "Game: Game loop ended\n";
@@ -56,7 +69,7 @@ void Game::run() {
 
 void Game::update(unsigned int elapsedTime) {}
 
-void Game::draw() {
+void Game::draw(Graphics &graphics) {
     graphics.clear();
 
     graphics.flip();
