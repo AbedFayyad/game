@@ -41,7 +41,7 @@ SDL_Texture *Graphics::createTexture(const std::string &path) {
         SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer,
                 surfaces[path]);
         if (!texture) {
-            std::err << "SDL_CreateTextureFromSurface failed: "
+            std::cerr << "SDL_CreateTextureFromSurface failed: "
                 << SDL_GetError();
             return NULL;
         }
