@@ -29,6 +29,8 @@ Game::Game() : activeScene(NULL) {
 Game::~Game() {
 
     // Clean up SDL subsystems (regardless of initialization)
+    SDL_Quit();
+
     std::clog << "Game instance destroyed\n";
 }
 
