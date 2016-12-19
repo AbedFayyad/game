@@ -1,28 +1,34 @@
 #ifndef game_hpp
 #define game_hpp
 
-#include "graphics.hpp"
-#include "scene.hpp"
-
-#include <iostream>
+#include <map>
+#include <string>
+#include <SDL2/SDL.h>
 
 class Game {
 public:
     Game();
     ~Game();
 
+    /* Begin the game's main loop */
+    void run();
+
+    /* Perform updates – should be called before every frame is drawn */
+    void update(const unsigned int);
+
+    /* Draw a texture to the screen */
+    void draw(const std::string &, const SDL_Rect *, const SDL_Rect *);
+
+    /* Present the contents of the renderer's backbuffer */
+    void flip();
+
+    /* Clear the screen – should be called before every frame is drawn */
+    void clear();
 private:
-    std::map<std::string, Scene> scenes;
-    Scene *activeScene;
+    SDL_Window *window;
+    SDL_Renderer *renderer;
 
-    void gameLoop();
-
-    // TODO Decide between pass by value/reference
-    void addScene(const std::string name, Scene scene);
-    void setActiveScene(const std::string name);
-
-    void update(unsigned int elapsedTime);
-    void draw(Graphics &graphics);
+    std::map<std::string, SDL_Texture *> textures;
 };
 
 #endif

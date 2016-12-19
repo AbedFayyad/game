@@ -1,86 +1,120 @@
 #include "game.hpp"
 
-#include "graphics.hpp"
-#include "input.hpp"
-#include "vector.hpp"
-
-#include <SDL2/SDL.h>
 #include <iostream>
-#include <string>
+#include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
 
-namespace {
-    const unsigned int FPS = 60;
-    const unsigned int MS_PER_S = 1000;
-    const unsigned int MAX_FRAME_TIME = MS_PER_S / FPS; 
-}
+using std::cerr;
+using std::endl;
 
-Game::Game() : activeScene(NULL) {
+Game::Game() {
 
-    // Set up SDL flags
-    Uint32 flags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER;
+    /* Initialize SDL */
+    if (SDL_Init(SDL_INIT_VIDEO))
+        cerr << "SDL_Init: " << SDL_GetError() << endl;
 
-    // Initialize SDL subsystems and start game if successful
-    if (!SDL_Init(flags)) {
-        std::clog << "Game instance successfully initialized\n";
-        gameLoop();
-    } else std::cerr << "SDL_Init failed: " << SDL_GetError() << '\n';
+    /* Set up SDL_Window and SDL_Renderer */
+    if (SDL_CreateWindowAndRenderer(1280, 768, 0, &window, &renderer))
+        cerr << "SDL_CreateWindowAndRenderer: " << SDL_GetError() << endl;
+
+    SDL_SetWindowTitle(window, "game");
+
+    /* Begin main game loop */
+    run();
 }
 
 Game::~Game() {
 
-    // Clean up SDL subsystems (regardless of initialization)
-    SDL_Quit();
+    /* Destroy window */
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
 
-    std::clog << "Game instance destroyed\n";
+    /* Shut down SDL */
+    SDL_Quit();
 }
 
-void Game::gameLoop() {
-    std::clog << "Game: Game loop began\n";
-
-    Graphics graphics;
-    Input input;
-
+void Game::run() {
+    SDL_Event event;
     bool shouldQuit = false;
-
     unsigned int currentTime, elapsedTime;
     unsigned int lastUpdateTime = SDL_GetTicks();
 
     while (!shouldQuit) {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    shouldQuit = true;
+                    break;
 
-        // Handle input events
-        input.handleEvents();
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+                        shouldQuit = true;
+                    break;
 
-        // Check if user requested to exit
-        if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) shouldQuit = true;
-        if (input.userRequestedShutdown) shouldQuit = true;
+                default:
+                    break;
+            }
+        }
 
-        // Calculate time since last update
+        /* Delta timing */
         currentTime = SDL_GetTicks();
         elapsedTime = currentTime - lastUpdateTime;
         lastUpdateTime = currentTime;
 
-        // Perform updates; cap frame time to the MAX_FRAME_TIME if necessary
-        update(std::min(elapsedTime, MAX_FRAME_TIME));
+        /* Perform updates */
+        update(elapsedTime);
 
-        // Perform drawing
-        draw(graphics);
+        /* Perform drawing */
+        clear();
+
+        SDL_Rect src = {64 * 5, 0, 64, 64};
+        SDL_Rect dst = {0, 0, 64, 64};
+        std::string path("content/sprites/sheet.png");
+        for (int i = 0; i < 20; ++i) {
+            for (int j = 0; j < 12; ++j) {
+                dst.x = i * 64;
+                dst.y = j * 64;
+                draw(path, &src, &dst);
+            }
+        }
+
+        flip();
+    }
+}
+
+void Game::update(const unsigned int elapsedTime) {
+}
+
+void Game::draw(const std::string &path, const SDL_Rect *src,
+                                         const SDL_Rect *dst) {
+
+    /* Create texture from path if it does not exist */
+    if (textures.count(path) == 0) {
+        SDL_Surface *surface;
+        SDL_Texture *texture;
+
+        if (!(surface = IMG_Load(path.c_str())))
+            cerr << "IMG_Load: " << IMG_GetError() << endl;
+
+        if (!(texture = SDL_CreateTextureFromSurface(renderer, surface)))
+            cerr << "SDL_CreateTextureFromSurface: " << SDL_GetError() << endl;
+
+        textures[path] = texture;
+        SDL_FreeSurface(surface);
     }
 
-    std::clog << "Game: Game loop ended\n";
+    /* Look up texture from texture map */
+    SDL_Texture *texture = textures[path];
+
+    if (SDL_RenderCopy(renderer, texture, src, dst))
+        cerr << "SDL_RenderCopy: " << SDL_GetError() << endl;
 }
 
-void Game::addScene(const std::string name, Scene scene) {}
-
-void Game::setActiveScene(const std::string name) {}
-
-void Game::update(unsigned int elapsedTime) {
-    activeScene->update(elapsedTime);
+void Game::flip() {
+    SDL_RenderPresent(renderer);
 }
 
-void Game::draw(Graphics &graphics) {
-    graphics.clear();
-
-    activeScene->draw(graphics);
-
-    graphics.flip();
+void Game::clear() {
+    if (SDL_RenderClear(renderer))
+        cerr << "SDL_RenderClear: " << SDL_GetError() << endl;
 }
