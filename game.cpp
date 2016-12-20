@@ -39,6 +39,10 @@ void Game::run() {
     unsigned int currentTime, elapsedTime;
     unsigned int lastUpdateTime = SDL_GetTicks();
 
+    SDL_Rect s = {0, 0, 15, 32};
+    SDL_Rect d = {0, 0, 15 * 2, 32 * 2};
+    Sprite person("content/sprites/spritesheet.png", s, d);
+
     while (!shouldQuit) {
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -47,14 +51,24 @@ void Game::run() {
                     break;
 
                 case SDL_KEYDOWN:
-                    if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-                        shouldQuit = true;
+                    if (!event.key.repeat) {
+                        pressedKeys[event.key.keysym.scancode] = true;
+                        heldKeys[event.key.keysym.scancode] = true;
+                    }
+                    break;
+
+                case SDL_KEYUP:
+                    releasedKeys[event.key.keysym.scancode] = true;
+                    heldKeys[event.key.keysym.scancode] = false;
                     break;
 
                 default:
                     break;
             }
         }
+
+        if (wasKeyPressed(SDL_SCANCODE_ESCAPE))
+            shouldQuit = true;
 
         /* Delta timing */
         currentTime = SDL_GetTicks();
@@ -77,6 +91,7 @@ void Game::run() {
                 draw(path, &src, &dst);
             }
         }
+        draw(person);
 
         flip();
     }
@@ -110,6 +125,10 @@ void Game::draw(const std::string &path, const SDL_Rect *src,
         cerr << "SDL_RenderCopy: " << SDL_GetError() << endl;
 }
 
+void Game::draw(const Sprite &sprite) {
+    draw(sprite.path, &sprite.src, &sprite.dst);
+}
+
 void Game::flip() {
     SDL_RenderPresent(renderer);
 }
@@ -117,4 +136,16 @@ void Game::flip() {
 void Game::clear() {
     if (SDL_RenderClear(renderer))
         cerr << "SDL_RenderClear: " << SDL_GetError() << endl;
+}
+
+bool Game::isKeyHeld(SDL_Scancode key) {
+    return heldKeys[key];
+}
+
+bool Game::wasKeyPressed(SDL_Scancode key) {
+    return pressedKeys[key];
+}
+
+bool Game::wasKeyReleased(SDL_Scancode key) {
+    return releasedKeys[key];
 }

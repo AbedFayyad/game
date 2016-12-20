@@ -1,6 +1,6 @@
 CC=clang++
 EXE=game
-OBJS=game.o main.o
+OBJS=game.o level.o main.o sprite.o
 FLAGS=-g -Wall -F/Library/Frameworks/
 FRAMEWORKS=-framework SDL2 -framework SDL2_image
 
